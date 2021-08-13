@@ -6,11 +6,12 @@ const Tareas = require("./models/tareas");
 const main = async () => {
   let opt = "";
   const tareas = new Tareas();
-
   const tareasBD = leerDB();
+
   if (tareasBD) {
     tareas.cargarTareasFromArr(tareasBD);
   }
+  
   do {
     opt = await inquireMenu();
 

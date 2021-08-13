@@ -20,6 +20,7 @@ class Tareas {
   }
 
   cargarTareasFromArr(tareas = []) {
+    //*A diferencia del anterior, aqui obtenemos los datos de un array y con el forEach lo recorrimos. Usamos "tarea" para obtener su id y sus valores para guardarlo en _listado
     tareas.forEach((tarea) => {
       this._listado[tarea.id] = tarea;
     });
