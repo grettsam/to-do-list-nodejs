@@ -3,10 +3,11 @@ const Tarea = require("./tarea");
 class Tareas {
   _listado = {};
 
-  get listadoArr() {
-    // *EL Object.keys() devuelve las llaves "primarias" de un arreglo o objetos, en este caso se pide las llaves primarias del objeto "_listado".
-    // *El uso del forEach() es para enviar la clave obtenida por el Object.keys() y recorrer el arreglo para llenarlo con las tareas.
+  constructor() {
+    this._listado = {};
+  }
 
+  get listadoArr() {
     const lista = [];
     Object.keys(this._listado).forEach((key) => {
       lista.push(this._listado[key]);
@@ -15,12 +16,7 @@ class Tareas {
     return lista;
   }
 
-  constructor() {
-    this._listado = {};
-  }
-
   cargarTareasFromArr(tareas = []) {
-    //*A diferencia del anterior, aqui obtenemos los datos de un array y con el forEach lo recorrimos. Usamos "tarea" para obtener su id y sus valores para guardarlo en _listado
     tareas.forEach((tarea) => {
       this._listado[tarea.id] = tarea;
     });
@@ -29,6 +25,45 @@ class Tareas {
   crearTarea(desc = "") {
     const tarea = new Tarea(desc);
     this._listado[tarea.id] = tarea;
+  }
+
+  listadoCompleto() {
+    console.log();
+    this.listadoArr.forEach((item, i) => {
+      const idx = `${i + 1}`.green;
+      item.completado
+        ? console.log(`${idx} ${item.desc} :: ${"Compleado".green}`)
+        : console.log(`${idx} ${item.desc} :: ${"Pendiente".red}`);
+    });
+    console.log();
+  }
+
+  listarPendientesCompletadas(completadas = true) {
+    console.log();
+    let contador = 0;
+
+    this.listadoArr.forEach((tarea) => {
+      const { desc, completado } = tarea;
+      const estado = completado ? "Completada".green : "Pendiente".red;
+      if (completadas) {
+        // mostrar completadas
+        if (completado) {
+          contador += 1;
+          console.log(`${(contador + ".").green} ${desc} :: ${estado}`);
+        }
+      } else {
+        // mostrar pendientes
+        if (!completado) {
+          contador += 1;
+          console.log(`${(contador + ".").green} ${desc} :: ${estado}`);
+        }
+      }
+    });
+  }
+  borrarTarea(id = "") {
+    if (this._listado[id]) {
+      delete this._listado[id];
+    }
   }
 }
 

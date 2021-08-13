@@ -76,8 +76,30 @@ const leerInput = async (message) => {
   ];
 
   const { desc } = await inquirer.prompt(question);
-  return desc
+  return desc;
 };
 
+const listadoTareaBorrar = async (tareas = []) => {
+  
+  const choices = tareas.map((tarea, i) => {
+    const idx = `${i + 1}.`.green;
+    return {
+      value: tarea.id,
+      name: `${idx} ${tarea.desc}`,
+    };
+  });
 
-module.exports = { inquireMenu, pausa, leerInput };
+  const preguntas = [
+    {
+      type: "list",
+      name: "id",
+      message: "Borrar",
+      choices,
+    },
+  ];
+
+  const { id } = await inquirer.prompt(preguntas);
+  return id;
+};
+
+module.exports = { inquireMenu, pausa, leerInput, listadoTareaBorrar };
